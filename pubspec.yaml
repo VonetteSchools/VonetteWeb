@@ -31,12 +31,11 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
-
   uses-material-design: true
-
   assets:
     - assets/images/fbla-logo.jpg
     - assets/images/profile_pic.png
     - assets/images/profile_pic1.png
     - assets/images/vonette_logo.png
+    - assets/images/google_logo.png
 
