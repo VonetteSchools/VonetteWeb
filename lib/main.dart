@@ -1,29 +1,33 @@
-import 'package:vonette_web/app_theme/theme_manager.dart';
-import 'package:vonette_web/constants.dart';
-import 'package:vonette_web/screens/main/main_screen.dart';
+import 'package:vonette_web/screens/wrapper/wrapper.dart';
+import 'package:vonette_web/services/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scaled_app/scaled_app.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:vonette_web/models/user.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  return runApp(ChangeNotifierProvider<ThemeNotifier>(
-    create: (_) => new ThemeNotifier(),
-    child: MyApp(),
-  ));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+          apiKey: "AIzaSyDuSVYLq41INBAwIMUF8aQEruwX1LLKp8c",
+          authDomain: "vonette-schools-mobile.firebaseapp.com",
+          projectId: "vonette-schools-mobile",
+          storageBucket: "vonette-schools-mobile.appspot.com",
+          messagingSenderId: "1024503668914",
+          appId: "1:1024503668914:web:33fa80ec16fe969478a9ab",
+          measurementId: "G-YSWQYGHWZL"));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp({Key? key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeNotifier>(
-      builder: (context, theme, _) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Vonette Schools Admin',
-        theme: theme.getTheme(),
-        home: MainScreen(),
-      ),
-    );
+    return StreamProvider<UserInApp?>.value(
+        value: AuthService().user,
+        initialData: null,
+        child: const MaterialApp(
+            debugShowCheckedModeBanner: false, home: Wrapper()));
   }
 }
