@@ -4,10 +4,12 @@ class UserInApp {
   final String uid;
   final String? email;
   final String? username;
+  final String? profileUrl;
 
   UserInApp({
     required this.uid,
     required this.email,
     required this.username,
+    required this.profileUrl
   });
 }

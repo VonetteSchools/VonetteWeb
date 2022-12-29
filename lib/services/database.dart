@@ -17,7 +17,6 @@ class DatabaseService {
       'email': user?.email,
       'uid': user?.uid,
       'profile_url': profile_url,
-      'successful': false,
     });
   }
 
@@ -34,5 +33,43 @@ class DatabaseService {
 
   Stream<QuerySnapshot> get updateUserStream {
     return _userInfo.snapshots();
+  }
+
+  final CollectionReference<Map<String, dynamic>> _studentInfo =
+      FirebaseFirestore.instance.collection('UserInformation');
+
+  Future get getInformation async {
+    Map userChatsMap = {};
+    await _studentInfo.get().then((querySnapshot) async {
+      var userUIDS = querySnapshot.docs.map((e) => e.id).toList();
+      var userInfo = querySnapshot.docs.map((e) => e.data()).toList();
+
+      for (int i = 0; i < userUIDS.length; i++) {
+        await _studentInfo
+            .doc(userUIDS[i])
+            .collection("Messages")
+            .get()
+            .then((querySnapshot2) async {
+          var userGroupIDS = querySnapshot2.docs.map((e) => e.id).toList();
+
+          Map chatNameMessagesMap = {};
+          for (int j = 0; j < userGroupIDS.length; j++) {
+            List chats = await _studentInfo
+                .doc(userUIDS[i])
+                .collection("Messages")
+                .doc(userGroupIDS[j])
+                .collection("Chats")
+                .get()
+                .then((querySnapshot3) {
+              return querySnapshot3.docs.map((e) => e.data()).toList();
+            });
+            chatNameMessagesMap[userGroupIDS[j]] = chats;
+          }
+          userChatsMap[[userUIDS[i], userInfo[i]]] = chatNameMessagesMap;
+        });
+      }
+    });
+    print(userChatsMap.keys.first);
+    print(userChatsMap.values.first);
   }
 }
