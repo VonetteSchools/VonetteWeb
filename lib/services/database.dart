@@ -69,7 +69,7 @@ class DatabaseService {
         });
       }
     });
-    print(userChatsMap.keys.first);
-    print(userChatsMap.values.first);
+
+    print(userChatsMap);
   }
 }

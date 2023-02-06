@@ -23,6 +23,7 @@ class _UserControlsState extends State<UserControls> {
 
   @override
   Widget build(BuildContext context) {
+    DatabaseService().getInformation;
     return SafeArea(
       child: SingleChildScrollView(
         padding: EdgeInsets.all(defaultPadding),
