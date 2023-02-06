@@ -43,7 +43,7 @@ class AuthService {
   UserInApp? _userFromFirebase(User? user) {
     return user != null
         ? UserInApp(
-            uid: user.uid, email: user.email, username: user.displayName)
+            uid: user.uid, email: user.email, username: user.displayName, profileUrl: user.photoURL)
         : null;
   }
 
